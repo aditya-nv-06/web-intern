@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Responsive Website</title>
+  <style>
+    :root {
+      --brand: #0073e6;
+      --brand-dark: #0055aa;
+      --sidebar-bg: #f4f4f4;
+      --footer-bg: #222;
+      --border-radius: 8px;
+      --header-padding: 1rem 0.5rem;
+      --main-padding: 1rem 2rem;
+      --max-width: 1200px;
+      --side-gap: 2rem;
+    }
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      background: #fafafa;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+    .header {
+      background: var(--brand);
+      color: #fff;
+      padding: var(--header-padding);
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .header h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    nav.nav-menu {
+      margin: 0;
+    }
+    .nav-menu ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 0;
+      margin: 0;
+      gap: 1.5rem;
+    }
+    .nav-menu li {
+      min-width: 80px;
+      text-align: center;
+    }
+    .nav-menu a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.05rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: var(--border-radius);
+      transition: background 0.2s;
+      display: block;
+    }
+    .nav-menu a:hover,
+    .nav-menu a:focus {
+      background: var(--brand-dark);
+      text-decoration: none;
+    }
+    .main-content {
+      display: flex;
+      gap: var(--side-gap);
+      padding: var(--main-padding);
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+    .content {
+      flex: 3;
+      min-width: 0;
+      margin-bottom: 0;
+      background: #fff;
+      border-radius: var(--border-radius);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      padding: 1.2rem 1rem;
+    }
+    .content h2 {
+      margin-top: 0;
+      font-size: 1.55rem;
+      color: var(--brand-dark);
+    }
+    .content img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin-top: 1rem;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.07);
+    }
+    .gallery-images {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .gallery-images img {
+      width: 100%;
+      max-width: 280px;
+      border-radius: 6px;
+      height: auto;
+      object-fit: cover;
+      background: #eee;
+      flex: 1 1 230px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .sidebar {
+      flex: 1;
+      background: var(--sidebar-bg);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      min-width: 220px;
+      margin-bottom: 0;
+      word-break: break-word;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      position: sticky;
+      top: 5.5rem;
+      height: fit-content;
+    }
+
+    .sidebar h3 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      color: var(--brand-dark);
+    }
+
+    .footer {
+      background: var(--footer-bg);
+      color: #fff;
+      text-align: center;
+      padding: 1.1rem 0.5rem;
+      margin-top: 2rem;
+      font-size: 1rem;
+      letter-spacing: .01rem;
+    }
+
+    /* Forms */
+    form label {
+      font-weight: 600;
+      color: var(--brand-dark);
+    }
+    form input, form textarea {
+      width: 100%;
+      max-width: 540px;
+      padding: 0.4rem 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #bbb;
+      border-radius: 5px;
+      font-size: 1rem;
+      background: #f7f9fa;
+    }
+    form button[type="submit"] {
+      color: #fff;
+      background: var(--brand);
+      border: none;
+      padding: 0.6rem 2rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background 0.2s;
+      margin-left: 0;
+      margin-top: 0.5rem;
+    }
+    form button[type="submit"]:hover {
+      background: var(--brand-dark);
+    }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .main-content {
+        padding: 1rem;
+        gap: 1rem;
+      }
+      .content {
+        padding: 1rem 0.5rem;
+      }
+      .sidebar {
+        min-width: 140px;
+        padding: 0.8rem 0.5rem;
+      }
+    }
+    @media (max-width: 900px) {
+      .main-content {
+        padding: 0.7rem 0.4rem;
+      }
+      .content {
+        font-size: 0.98rem;
+        padding: 1rem 0.3rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .nav-menu ul {
+        flex-direction: column;
+        gap: 0.75rem;
+        margin: 0;
+      }
+      .main-content {
+        flex-direction: column;
+        gap: 0;
+        padding: 1rem 0.5rem;
+        max-width: 100%;
+      }
+      .sidebar,
+      .content {
+        width: 100%;
+        padding: 0;
+        margin-bottom: 1.2rem;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .sidebar {
+        min-width: unset;
+        border-radius: 0;
+        padding: 1rem 0 0.7rem 0;
+        position: static;
+        top: unset;
+      }
+      .gallery-images {
+        flex-direction: column;
+      }
+      .gallery-images img {
+        max-width: 100%;
+      }
+      .content img {
+        margin-top: 0.75rem;
+      }
+      h1 { font-size: 1.7rem; }
+    }
+    @media (max-width: 480px) {
+      .header,
+      .footer {
+        padding-left: 0.12rem;
+        padding-right: 0.12rem;
+      }
+      .main-content {
+        padding: 0.5rem 0.2rem;
+      }
+      .sidebar {
+        padding: 0.5rem 0;
+      }
+      .content img {
+        margin-top: 0.5rem;
+      }
+      h1 { font-size: 1.25rem; }
+      h2 { font-size: 1.01rem; }
+      h3 { font-size: 0.96rem; }
+      .gallery-images img {
+        margin-bottom: 0.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>My Responsive Website</h1>
+    <nav class="nav-menu" aria-label="Main Navigation">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <section class="content">
+      <!-- Home Section -->
+      <div id="home">
+        <h2>Home</h2>
+        <p>Welcome to our responsive website! Explore our gallery, learn more about us, and get in touch for more information.</p>
+        <img src="https://via.placeholder.com/800x400?text=Home" alt="Home Image" />
+      </div>
+
+      <!-- Gallery Section -->
+      <div id="gallery">
+        <h2>Gallery</h2>
+        <p>Browse our collection of beautiful images showcasing our work and activities.</p>
+        <div class="gallery-images">
+          <img src="https://via.placeholder.com/300x200?text=Image+1" alt="Gallery Image 1" />
+          <img src="https://via.placeholder.com/300x200?text=Image+2" alt="Gallery Image 2" />
+          <img src="https://via.placeholder.com/300x200?text=Image+3" alt="Gallery Image 3" />
+        </div>
+      </div>
+
+      <!-- About Section -->
+      <div id="about">
+        <h2>About</h2>
+        <p>We are passionate about web design, dedicated to creating flexible and user-friendly experiences for everyone. Our team combines creativity and technology to deliver visually compelling and robust websites.</p>
+        <ul>
+          <li>Experienced designers and developers</li>
+          <li>Focus on accessibility and performance</li>
+          <li>Committed to responsive solutions</li>
+        </ul>
+      </div>
+
+      <!-- Contact Section -->
+      <div id="contact">
+        <h2>Contact</h2>
+        <p>Ready to connect? Reach out to us for inquiries, quotes, or collaboration opportunities.</p>
+        <form>
+          <label for="name">Name:</label><br />
+          <input type="text" id="name" name="name" /><br /><br />
+          <label for="email">Email:</label><br />
+          <input type="email" id="email" name="email" /><br /><br />
+          <label for="message">Message:</label><br />
+          <textarea id="message" name="message" rows="4"></textarea><br /><br />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </section>
+    <aside class="sidebar">
+      <h3>Sidebar</h3>
+      <p>
+        Additional information goes here.<br>
+        Resize the screen to see responsiveness, including navigation, sidebar, and content layout adapting at every device width.
+      </p>
+      <ul style="margin-top:0.7rem;padding-left:20px;">
+        <li>Fast navigation</li>
+        <li>Modern layout</li>
+        <li>Fully mobile-ready</li>
+        <li>Clean code structure</li>
+      </ul>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 Responsive Web Design</p>
+  </footer>
+</body>
+</html>
