@@ -271,8 +271,9 @@
           name="name" 
           placeholder="Enter your full name"
           autocomplete="name"
+          aria-describedby="nameError"
         />
-        <div class="error-message" id="nameError"></div>
+        <div class="error-message" id="nameError" role="alert" aria-live="polite"></div>
       </div>
 
       <!-- Email Field -->
@@ -284,8 +285,9 @@
           name="email" 
           placeholder="Enter your email address"
           autocomplete="email"
+          aria-describedby="emailError"
         />
-        <div class="error-message" id="emailError"></div>
+        <div class="error-message" id="emailError" role="alert" aria-live="polite"></div>
       </div>
 
       <!-- Message Field -->
@@ -295,11 +297,12 @@
           id="message" 
           name="message" 
           placeholder="Enter your message"
+          aria-describedby="messageError"
         ></textarea>
         <div class="char-count">
           <span id="charCount">0</span> / 500 characters
         </div>
-        <div class="error-message" id="messageError"></div>
+        <div class="error-message" id="messageError" role="alert" aria-live="polite"></div>
       </div>
 
       <!-- Submit Button -->
@@ -323,11 +326,12 @@
 
     // Email validation regex pattern
     // This pattern validates standard email formats including:
-    // - Local part: letters, numbers, dots, hyphens, underscores
+    // - Local part: letters, numbers, dots, hyphens, underscores, plus signs
+    // - Must not start or end with a dot, no consecutive dots
     // - @ symbol
-    // - Domain: letters, numbers, dots, hyphens
+    // - Domain: letters, numbers, hyphens (not consecutive dots)
     // - TLD: 2-6 letters
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    const emailRegex = /^[a-zA-Z0-9][a-zA-Z0-9._+-]*[a-zA-Z0-9]@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,6}$/;
 
     // Character counter for message field
     messageInput.addEventListener('input', function() {
@@ -494,7 +498,7 @@
         console.log('Email:', emailInput.value.trim());
         console.log('Message:', messageInput.value.trim());
         
-        // Reset form after 2 seconds
+        // Reset form after 2 seconds, then hide success message after additional 3 seconds
         setTimeout(function() {
           form.reset();
           charCount.textContent = '0';
@@ -504,7 +508,7 @@
           emailInput.classList.remove('success');
           messageInput.classList.remove('success');
           
-          // Hide success message after 5 seconds
+          // Hide success message after additional 3 seconds (5 seconds total)
           setTimeout(function() {
             successMessage.classList.remove('show');
           }, 3000);
