@@ -1,1 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Form Validation - Task 6</title>
+  <style>
+    /* CSS Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    /* Root Variables */
+    :root {
+      --primary-color: #4a90e2;
+      --success-color: #28a745;
+      --error-color: #dc3545;
+      --text-color: #333333;
+      --light-bg: #f8f9fa;
+      --white: #ffffff;
+      --border-color: #dcdcdc;
+      --focus-color: #4a90e2;
+      --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Body Styling */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    /* Container */
+    .form-container {
+      background-color: var(--white);
+      max-width: 500px;
+      width: 100%;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    /* Header */
+    .form-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-header h1 {
+      color: var(--text-color);
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .form-header p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    /* Form Group */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-color);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .form-group label .required {
+      color: var(--error-color);
+      margin-left: 2px;
+    }
+
+    /* Input Fields */
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 15px;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      background-color: var(--white);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--focus-color);
+      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+      max-height: 300px;
+    }
+
+    /* Error State */
+    .form-group input.error,
+    .form-group textarea.error {
+      border-color: var(--error-color);
+      background-color: #fff5f5;
+    }
+
+    .form-group input.error:focus,
+    .form-group textarea.error:focus {
+      box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+    }
+
+    /* Success State */
+    .form-group input.success,
+    .form-group textarea.success {
+      border-color: var(--success-color);
+      background-color: #f0fff4;
+    }
+
+    /* Error Message */
+    .error-message {
+      color: var(--error-color);
+      font-size: 13px;
+      margin-top: 6px;
+      display: none;
+      padding-left: 3px;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    /* Submit Button */
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--primary-color);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background-color: #3a7bc8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .submit-btn:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Success Message */
+    .success-message {
+      background-color: #d4edda;
+      border: 2px solid var(--success-color);
+      color: #155724;
+      padding: 15px 20px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      display: none;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .success-message.show {
+      display: block;
+      animation: slideDown 0.4s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Character Count */
+    .char-count {
+      font-size: 12px;
+      color: #666;
+      text-align: right;
+      margin-top: 5px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      .form-container {
+        padding: 30px 20px;
+      }
+
+      .form-header h1 {
+        font-size: 24px;
+      }
+
+      .form-group input[type="text"],
+      .form-group input[type="email"],
+      .form-group textarea {
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+
+      .submit-btn {
+        padding: 12px;
+        font-size: 15px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      body {
+        padding: 15px;
+      }
+
+      .form-container {
+        padding: 25px 15px;
+      }
+
+      .form-header h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <div class="form-header">
+      <h1>Contact Form</h1>
+      <p>Please fill out all fields to submit the form</p>
+    </div>
+
+    <!-- Success Message -->
+    <div id="successMessage" class="success-message">
+      ✓ Form submitted successfully! Thank you for your message.
+    </div>
+
+    <!-- Contact Form -->
+    <form id="contactForm" novalidate>
+      <!-- Name Field -->
+      <div class="form-group">
+        <label for="name">Name<span class="required">*</span></label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          placeholder="Enter your full name"
+          autocomplete="name"
+          aria-describedby="nameError"
+        />
+        <div class="error-message" id="nameError" role="alert" aria-live="polite"></div>
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">Email<span class="required">*</span></label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          placeholder="Enter your email address"
+          autocomplete="email"
+          aria-describedby="emailError"
+        />
+        <div class="error-message" id="emailError" role="alert" aria-live="polite"></div>
+      </div>
+
+      <!-- Message Field -->
+      <div class="form-group">
+        <label for="message">Message<span class="required">*</span></label>
+        <textarea 
+          id="message" 
+          name="message" 
+          placeholder="Enter your message"
+          aria-describedby="messageError"
+        ></textarea>
+        <div class="char-count">
+          <span id="charCount">0</span> / 500 characters
+        </div>
+        <div class="error-message" id="messageError" role="alert" aria-live="polite"></div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="submit-btn">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    // Get form and input elements
+    const form = document.getElementById('contactForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const messageInput = document.getElementById('message');
+    const successMessage = document.getElementById('successMessage');
+    const charCount = document.getElementById('charCount');
+
+    // Get error message elements
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const messageError = document.getElementById('messageError');
+
+    // Email validation regex pattern
+    // This pattern validates standard email formats including:
+    // - Local part: letters, numbers, dots, hyphens, underscores, plus signs
+    // - Must not start or end with a dot, no consecutive dots
+    // - @ symbol
+    // - Domain: letters, numbers, hyphens (not consecutive dots)
+    // - TLD: 2-6 letters
+    const emailRegex = /^[a-zA-Z0-9][a-zA-Z0-9._+-]*[a-zA-Z0-9]@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,6}$/;
+
+    // Character counter for message field
+    messageInput.addEventListener('input', function() {
+      const length = this.value.length;
+      charCount.textContent = length;
+      
+      // Limit to 500 characters
+      if (length > 500) {
+        this.value = this.value.substring(0, 500);
+        charCount.textContent = 500;
+      }
+    });
+
+    // Real-time validation on blur (when user leaves the field)
+    nameInput.addEventListener('blur', function() {
+      validateName();
+    });
+
+    emailInput.addEventListener('blur', function() {
+      validateEmail();
+    });
+
+    messageInput.addEventListener('blur', function() {
+      validateMessage();
+    });
+
+    // Clear error when user starts typing
+    nameInput.addEventListener('input', function() {
+      if (this.classList.contains('error')) {
+        clearError(this, nameError);
+      }
+    });
+
+    emailInput.addEventListener('input', function() {
+      if (this.classList.contains('error')) {
+        clearError(this, emailError);
+      }
+    });
+
+    messageInput.addEventListener('input', function() {
+      if (this.classList.contains('error')) {
+        clearError(this, messageError);
+      }
+    });
+
+    // Validation functions
+    function validateName() {
+      const name = nameInput.value.trim();
+      
+      if (name === '') {
+        showError(nameInput, nameError, 'Name is required');
+        return false;
+      }
+      
+      if (name.length < 2) {
+        showError(nameInput, nameError, 'Name must be at least 2 characters long');
+        return false;
+      }
+      
+      if (name.length > 50) {
+        showError(nameInput, nameError, 'Name must not exceed 50 characters');
+        return false;
+      }
+      
+      // Check for valid characters (letters, spaces, hyphens, apostrophes)
+      const nameRegex = /^[a-zA-Z\s'-]+$/;
+      if (!nameRegex.test(name)) {
+        showError(nameInput, nameError, 'Name can only contain letters, spaces, hyphens, and apostrophes');
+        return false;
+      }
+      
+      showSuccess(nameInput, nameError);
+      return true;
+    }
+
+    function validateEmail() {
+      const email = emailInput.value.trim();
+      
+      if (email === '') {
+        showError(emailInput, emailError, 'Email is required');
+        return false;
+      }
+      
+      if (!emailRegex.test(email)) {
+        showError(emailInput, emailError, 'Please enter a valid email address (e.g., user@example.com)');
+        return false;
+      }
+      
+      if (email.length > 100) {
+        showError(emailInput, emailError, 'Email must not exceed 100 characters');
+        return false;
+      }
+      
+      showSuccess(emailInput, emailError);
+      return true;
+    }
+
+    function validateMessage() {
+      const message = messageInput.value.trim();
+      
+      if (message === '') {
+        showError(messageInput, messageError, 'Message is required');
+        return false;
+      }
+      
+      if (message.length < 10) {
+        showError(messageInput, messageError, 'Message must be at least 10 characters long');
+        return false;
+      }
+      
+      if (message.length > 500) {
+        showError(messageInput, messageError, 'Message must not exceed 500 characters');
+        return false;
+      }
+      
+      showSuccess(messageInput, messageError);
+      return true;
+    }
+
+    // Helper function to show error
+    function showError(input, errorElement, message) {
+      input.classList.add('error');
+      input.classList.remove('success');
+      errorElement.textContent = message;
+      errorElement.classList.add('show');
+    }
+
+    // Helper function to show success
+    function showSuccess(input, errorElement) {
+      input.classList.remove('error');
+      input.classList.add('success');
+      errorElement.classList.remove('show');
+      errorElement.textContent = '';
+    }
+
+    // Helper function to clear error
+    function clearError(input, errorElement) {
+      input.classList.remove('error');
+      input.classList.remove('success');
+      errorElement.classList.remove('show');
+      errorElement.textContent = '';
+    }
+
+    // Form submission handler
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Hide success message if visible
+      successMessage.classList.remove('show');
+      
+      // Validate all fields
+      const isNameValid = validateName();
+      const isEmailValid = validateEmail();
+      const isMessageValid = validateMessage();
+      
+      // If all validations pass
+      if (isNameValid && isEmailValid && isMessageValid) {
+        // Show success message
+        successMessage.classList.add('show');
+        
+        // Log form data to console (for demonstration)
+        console.log('Form submitted successfully!');
+        console.log('Name:', nameInput.value.trim());
+        console.log('Email:', emailInput.value.trim());
+        console.log('Message:', messageInput.value.trim());
+        
+        // Reset form after 2 seconds, then hide success message after additional 3 seconds
+        setTimeout(function() {
+          form.reset();
+          charCount.textContent = '0';
+          
+          // Remove success classes
+          nameInput.classList.remove('success');
+          emailInput.classList.remove('success');
+          messageInput.classList.remove('success');
+          
+          // Hide success message after additional 3 seconds (5 seconds total)
+          setTimeout(function() {
+            successMessage.classList.remove('show');
+          }, 3000);
+        }, 2000);
+      } else {
+        // If validation fails, prevent form submission
+        console.log('Form validation failed. Please correct the errors.');
+      }
+    });
+
+    // Test cases for edge cases (uncomment to run tests)
+    /*
+    function runTests() {
+      console.log('=== Running Form Validation Tests ===');
+      
+      // Test 1: Empty inputs
+      console.log('\nTest 1: Empty inputs');
+      nameInput.value = '';
+      emailInput.value = '';
+      messageInput.value = '';
+      console.log('Name valid:', validateName()); // Should be false
+      console.log('Email valid:', validateEmail()); // Should be false
+      console.log('Message valid:', validateMessage()); // Should be false
+      
+      // Test 2: Invalid email formats
+      console.log('\nTest 2: Invalid email formats');
+      const invalidEmails = ['test', 'test@', '@example.com', 'test@.com', 'test@example', 'test @example.com'];
+      invalidEmails.forEach(email => {
+        emailInput.value = email;
+        console.log(`"${email}" valid:`, validateEmail()); // Should all be false
+      });
+      
+      // Test 3: Valid email formats
+      console.log('\nTest 3: Valid email formats');
+      const validEmails = ['test@example.com', 'user.name@example.co.uk', 'user+tag@example.com'];
+      validEmails.forEach(email => {
+        emailInput.value = email;
+        console.log(`"${email}" valid:`, validateEmail()); // Should all be true
+      });
+      
+      // Test 4: Special characters in name
+      console.log('\nTest 4: Special characters in name');
+      const specialNames = ['John@Doe', 'Jane123', 'Bob$Smith', "O'Brien", "Mary-Jane"];
+      specialNames.forEach(name => {
+        nameInput.value = name;
+        console.log(`"${name}" valid:`, validateName());
+      });
+      
+      // Test 5: Message length
+      console.log('\nTest 5: Message length validation');
+      messageInput.value = 'Short';
+      console.log('Short message valid:', validateMessage()); // Should be false
+      messageInput.value = 'This is a valid message with more than 10 characters';
+      console.log('Valid message valid:', validateMessage()); // Should be true
+      
+      console.log('\n=== Tests Complete ===');
+    }
+    
+    // Uncomment to run tests on page load
+    // runTests();
+    */
+  </script>
+</body>
+</html>
